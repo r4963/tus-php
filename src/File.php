@@ -11,7 +11,8 @@ use TusPhp\Exception\OutOfRangeException;
 class File
 {
     /** @const Max chunk size */
-    public const CHUNK_SIZE = 8192; // 8 kilobytes.
+    #public const CHUNK_SIZE = 8192; // 8 kilobytes.
+    public const CHUNK_SIZE = 10485760; // 10 megabytes.
 
     /** @const Input stream */
     public const INPUT_STREAM = 'php://input';
@@ -426,7 +427,8 @@ class File
      */
     public function read($handle, int $chunkSize): string
     {
-        $data = fread($handle, $chunkSize);
+        // $data = fread($handle, $chunkSize);
+        $data = stream_get_contents($handle, $chunkSize);
 
         if (false === $data) {
             throw new FileException('Cannot read file.');
